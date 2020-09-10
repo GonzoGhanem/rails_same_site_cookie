@@ -38,12 +38,24 @@ module RailsSameSiteCookie
       is_buggy_chrome? or is_buggy_uc?
     end
 
+    def is_os_family?(family)
+      user_agent.os && user_agent.os.family == family
+    end
+
+    def is_minor?(minor)
+      user_agent.os && user_agent.os.version && user_agent.os.version.minor == minor
+    end
+
+    def is_major?(major)
+      user_agent.os && user_agent.os.version && user_agent.os.version.major == major
+    end
+
     def is_ios_version?(major)
-      (user_agent.os && user_agent.os.family == 'iOS') and (user_agent.os && user_agent.os.version && user_agent.os.version.major == major)
+      is_os_family?('iOS') and is_major?(major)
     end
 
     def is_mac_osx_version?(major,minor)
-      (user_agent.os && user_agent.os.family == 'Mac OS X') and (user_agent.os && user_agent.os.version && user_agent.os.version.major == major) and (user_agent.os && user_agent.os.version && user_agent.os.version.minor == minor)
+      is_os_family?('Mac OS X') and is_major?(major) and is_minor?(minor)
     end
 
     def is_safari?
